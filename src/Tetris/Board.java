@@ -5,9 +5,9 @@ import java.util.Random;
 public class Board
 {
     private SquareType[][] squares;
-    private int  width, height, x, y;
+    private int  width, height, fallingX, fallingY;
     private Random rnd = new Random();
-    private Poly polyFalling = null;
+    private Poly fallingPoly = null;
 
     public Board(final int width, final int height) {
 	this.width = width;
@@ -29,25 +29,20 @@ public class Board
 	return height;
     }
 
-    public int getX() {
-	return x;
+    public int getFallingX() {
+	return fallingX;
     }
 
-    public int getY() {
-	return y;
+    public int getFallingY() {
+	return fallingY;
     }
 
-    public Poly getPolyFalling() {
-	return polyFalling;
+    public Poly getFallingPoly() {
+	return fallingPoly;
     }
 
     public SquareType getSquareType(int x, int y) {
 	return squares[x][y];
-    }
-
-    public static void main(String[] args) {
-	Board board = new Board(10, 10);
-	System.out.println(board);
     }
 
     public void randomiseBoard() {

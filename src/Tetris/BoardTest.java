@@ -1,15 +1,29 @@
 package Tetris;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
 public class BoardTest
 {
-    public static void main(String[] args) {
-	Board board = new Board(10, 10);
+    private BoardTest() {}
 
-	int n=0;
-	while (n < 10) {
-	    board.randomiseBoard();
-	    n++;
-	    System.out.println(BoardToTextConverter.convertToText(board));
-	}
+    public static void main(String[] args) {
+	final Board board = new Board(10, 10);
+
+	board.randomiseBoard();
+
+	final TetrisFrame frame = new TetrisFrame("Tetris", board);
+
+	final Action doOneStep = new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		board.randomiseBoard();
+		frame.textarea.setText(BoardToTextConverter.convertToText(board));
+	    }
+	};
+
+	final Timer clockTimer = new Timer(500, doOneStep);
+	clockTimer.setCoalesce(true);
+	clockTimer.start();
     }
 }

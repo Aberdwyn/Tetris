@@ -18,7 +18,7 @@ public class BoardTest
 	final Action doOneStep = new AbstractAction() {
 	    public void actionPerformed(ActionEvent e) {
 		board.randomiseBoard();
-		frame.textarea.setText(BoardToTextConverter.convertToText(board));
+		frame.tetrisComponent.repaint();
 	    }
 	};
 

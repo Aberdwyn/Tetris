@@ -14,8 +14,8 @@ public class Board
 	this.height = height;
 	this.squares = new SquareType[height][width];
 
-	for (int x=0; x<width-1; x++) {
-	    for (int y=0; y<height-1; y++) {
+	for (int x=0; x<width; x++) {
+	    for (int y=0; y<height; y++) {
 		squares[x][y] = SquareType.EMPTY;
 	    }
 	}
@@ -42,12 +42,12 @@ public class Board
     }
 
     public SquareType getSquareType(int x, int y) {
-	return squares[x][y];
+	return squares[y][x];
     }
 
     public void randomiseBoard() {
-	for (int x=0; x<width-1; x++) {
-	    for (int y=0; y <height-1; y++) {
+	for (int x=0; x<width; x++) {
+	    for (int y=0; y <height; y++) {
 		squares[x][y] = SquareType.values()[rnd.nextInt(8)];
 	    }
 

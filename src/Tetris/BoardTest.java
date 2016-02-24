@@ -14,11 +14,11 @@ public class BoardTest
 	final TetrisFrame frame = new TetrisFrame("Tetris", board);
 	board.addBoardListener(frame.tetrisComponent);
 
-	board.randomiseBoard();
+	//board.clearBoard();
 
 	final Action doOneStep = new AbstractAction() {
 	    public void actionPerformed(ActionEvent e) {
-		board.randomiseBoard();
+		board.tick();
 	    }
 	};
 

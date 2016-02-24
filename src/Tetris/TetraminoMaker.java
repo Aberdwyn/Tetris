@@ -1,18 +1,15 @@
 package Tetris;
 
-public class TetraminoMaker
+public final class TetraminoMaker
 {
-    SquareType[][] squares;
-
-    public TetraminoMaker(final SquareType[][] squares) {
-	this.squares = squares;
-    }
-
-    public int getNumberOfTypes() {
+    public static int getNumberOfTypes() {
 	return SquareType.values().length;
     }
 
-    public Poly getPoly(int n) {
+    private TetraminoMaker() {
+    }
+
+    public static Poly getPoly(int n) {
 	SquareType squaretype = SquareType.values()[n];
 
 	switch (squaretype) {
@@ -27,8 +24,8 @@ public class TetraminoMaker
 	}
     }
 
-    private Poly createIPoly() {
-	squares = new SquareType[4][4];
+    private static Poly createIPoly() {
+	SquareType[][] squares = new SquareType[4][4];
 	squares[1][0] = SquareType.I;
 	squares[1][1] = SquareType.I;
 	squares[1][2] = SquareType.I;
@@ -37,8 +34,8 @@ public class TetraminoMaker
 	return poly;
     }
 
-    private Poly createOPoly() {
-	squares = new SquareType[2][2];
+    private static Poly createOPoly() {
+	SquareType[][] squares = new SquareType[2][2];
 	squares[0][0] = SquareType.O;
 	squares[0][1] = SquareType.O;
 	squares[1][0] = SquareType.O;
@@ -47,8 +44,8 @@ public class TetraminoMaker
 	return poly;
     }
 
-    private Poly createTPoly() {
-	squares = new SquareType[3][3];
+    private static Poly createTPoly() {
+	SquareType[][] squares = new SquareType[3][3];
 	squares[0][1] = SquareType.T;
 	squares[1][0] = SquareType.T;
 	squares[1][1] = SquareType.T;
@@ -57,8 +54,8 @@ public class TetraminoMaker
 	return poly;
     }
 
-    private Poly createSPoly() {
-	squares = new SquareType[3][3];
+    private static Poly createSPoly() {
+	SquareType[][] squares = new SquareType[3][3];
 	squares[0][1] = SquareType.S;
 	squares[0][2] = SquareType.S;
 	squares[1][0] = SquareType.S;
@@ -67,8 +64,8 @@ public class TetraminoMaker
 	return poly;
     }
 
-    private Poly createZPoly() {
-	squares = new SquareType[3][3];
+    private static Poly createZPoly() {
+	SquareType[][] squares = new SquareType[3][3];
 	squares[0][0] = SquareType.Z;
 	squares[0][1] = SquareType.Z;
 	squares[1][1] = SquareType.Z;
@@ -77,8 +74,8 @@ public class TetraminoMaker
     	return poly;
     }
 
-    private Poly createJPoly() {
-	squares = new SquareType[3][3];
+    private static Poly createJPoly() {
+	SquareType[][] squares = new SquareType[3][3];
 	squares[0][0] = SquareType.J;
 	squares[1][0] = SquareType.J;
 	squares[1][1] = SquareType.J;
@@ -87,8 +84,8 @@ public class TetraminoMaker
         return poly;
     }
 
-    private Poly createLPoly() {
-	squares = new SquareType[3][3];
+    private static Poly createLPoly() {
+	SquareType[][] squares = new SquareType[3][3];
 	squares[0][2] = SquareType.L;
 	squares[1][0] = SquareType.L;
 	squares[1][1] = SquareType.L;

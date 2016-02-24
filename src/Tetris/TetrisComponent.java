@@ -40,8 +40,31 @@ public class TetrisComponent extends JComponent implements BoardListener
 
 	for (int x = 0; x < board.getWidth(); x++) {
 	    for (int y = 0; y < board.getHeight(); y++) {
-		g2d.setColor(SQUARE_COLOR.get(board.getSquareType(x, y)));
-		g2d.fillRect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+		if (board.getFallingPoly() == null) {
+		    g2d.setColor(SQUARE_COLOR.get(board.getSquareType(x, y)));
+		    g2d.fillRect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+		    continue;
+		}
+
+		int fallingPolyLength = board.getFallingPoly().block[0].length;
+	    	int fallingPolyHeight = board.getFallingPoly().block.length;
+
+		if ((board.getFallingX()<=x && x<=board.getFallingX()+fallingPolyLength) &&
+		    (board.getFallingY()<=y && y<=board.getFallingY()+fallingPolyHeight)) {
+		    if (board.getFallingPoly().block[y][x] == SquareType.EMPTY) {
+			g2d.setColor(SQUARE_COLOR.get(board.getSquareType(x, y)));
+			g2d.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+		    } else {
+			g2d.setColor(SQUARE_COLOR.get(board.getFallingPoly()));
+			g2d.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+		    }
+		}
+
+		else {
+		    g2d.setColor(SQUARE_COLOR.get(board.getSquareType(x, y)));
+		    g2d.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+		}
 	    }
 	}
     }

@@ -52,7 +52,16 @@ public class Board
     public void randomiseBoard() {
 	for (int x=0; x<width; x++) {
 	    for (int y=0; y <height; y++) {
-		squares[x][y] = SquareType.values()[rnd.nextInt(8)];
+		squares[x][y] = SquareType.values()[rnd.nextInt(TetraminoMaker.getNumberOfTypes())];
+	    }
+	}
+	this.notifyListeners();
+    }
+
+    public void clearBoard() {
+	for (int x=0; x<width; x++) {
+	    for (int y=0; y <height; y++) {
+		squares[x][y] = SquareType.EMPTY;
 	    }
 	}
 	this.notifyListeners();
@@ -68,5 +77,13 @@ public class Board
 	}
     }
 
-
+    public void tick() {
+	if (fallingPoly == null) {
+	    fallingPoly = TetraminoMaker.getPoly(rnd.nextInt(TetraminoMaker.getNumberOfTypes()));
+	    fallingX = this.getWidth() / 2;
+	    fallingY = 0;
+	}
+	else { // gör något annat
+	}
+    }
 }

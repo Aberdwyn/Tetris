@@ -1,5 +1,7 @@
 package Tetris;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Board
@@ -8,11 +10,13 @@ public class Board
     private int  width, height, fallingX, fallingY;
     private Random rnd = new Random();
     private Poly fallingPoly = null;
+    private List<BoardListener> boardListeners;
 
     public Board(final int width, final int height) {
 	this.width = width;
 	this.height = height;
 	this.squares = new SquareType[height][width];
+	this.boardListeners = new ArrayList<>();
 
 	for (int x=0; x<width; x++) {
 	    for (int y=0; y<height; y++) {
@@ -50,7 +54,19 @@ public class Board
 	    for (int y=0; y <height; y++) {
 		squares[x][y] = SquareType.values()[rnd.nextInt(8)];
 	    }
+	}
+	this.notifyListeners();
+    }
 
+    public void addBoardListener(BoardListener bl) {
+	this.boardListeners.add(bl);
+    }
+
+    private void notifyListeners() {
+	for (BoardListener bl: boardListeners) {
+	    bl.boardChanged();
 	}
     }
+
+
 }

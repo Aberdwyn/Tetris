@@ -7,7 +7,7 @@ import java.util.EnumMap;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class TetrisComponent extends JComponent
+public class TetrisComponent extends JComponent implements BoardListener
 {
     private Board board;
     final int BLOCK_SIZE = 40;
@@ -44,6 +44,10 @@ public class TetrisComponent extends JComponent
 		g2d.fillRect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 	    }
 	}
+    }
+
+    public void boardChanged() {
+	this.repaint();
     }
 
 }

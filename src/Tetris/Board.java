@@ -20,7 +20,7 @@ public class Board
 
 	for (int x=0; x<width; x++) {
 	    for (int y=0; y<height; y++) {
-		squares[x][y] = SquareType.EMPTY;
+		squares[y][x] = SquareType.EMPTY;
 	    }
 	}
     }
@@ -79,11 +79,24 @@ public class Board
 
     public void tick() {
 	if (fallingPoly == null) {
-	    fallingPoly = TetraminoMaker.getPoly(rnd.nextInt(TetraminoMaker.getNumberOfTypes()));
-	    fallingX = this.getWidth() / 2;
+	    fallingPoly = TetraminoMaker.getPoly(rnd.nextInt(TetraminoMaker.getNumberOfTypes()-1));
+	    fallingX = width/2 - fallingPoly.block.length/2;
 	    fallingY = 0;
+	    this.notifyListeners();
 	}
-	else { // gör något annat
+	else {
+	    fallingY++;
+	    this.notifyListeners();
 	}
+    }
+
+    public void moveLeft() {
+	fallingX--;
+	this.notifyListeners();
+    }
+
+    public void moveRight() {
+	fallingX++;
+	this.notifyListeners();
     }
 }

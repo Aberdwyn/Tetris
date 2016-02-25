@@ -9,7 +9,7 @@ public class BoardTest
     private BoardTest() {}
 
     public static void main(String[] args) {
-	final Board board = new Board(10, 10);
+	final Board board = new Board(10, 20);
 
 	final TetrisFrame frame = new TetrisFrame("Tetris", board);
 	board.addBoardListener(frame.tetrisComponent);

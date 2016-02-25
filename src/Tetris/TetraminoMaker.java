@@ -26,6 +26,11 @@ public final class TetraminoMaker
 
     private static Poly createIPoly() {
 	SquareType[][] squares = new SquareType[4][4];
+	for (int x=0; x<squares[0].length; x++) {
+	    for (int y=0; y<squares.length; y++) {
+		squares[y][x] = SquareType.EMPTY;
+	    }
+	}
 	squares[1][0] = SquareType.I;
 	squares[1][1] = SquareType.I;
 	squares[1][2] = SquareType.I;
@@ -36,6 +41,11 @@ public final class TetraminoMaker
 
     private static Poly createOPoly() {
 	SquareType[][] squares = new SquareType[2][2];
+	for (int x=0; x<squares[0].length; x++) {
+	    for (int y=0; y<squares.length; y++) {
+		squares[y][x] = SquareType.EMPTY;
+	    }
+	}
 	squares[0][0] = SquareType.O;
 	squares[0][1] = SquareType.O;
 	squares[1][0] = SquareType.O;
@@ -46,6 +56,11 @@ public final class TetraminoMaker
 
     private static Poly createTPoly() {
 	SquareType[][] squares = new SquareType[3][3];
+	for (int x=0; x<squares[0].length; x++) {
+	    for (int y=0; y<squares.length; y++) {
+		squares[y][x] = SquareType.EMPTY;
+	    }
+	}
 	squares[0][1] = SquareType.T;
 	squares[1][0] = SquareType.T;
 	squares[1][1] = SquareType.T;
@@ -56,6 +71,11 @@ public final class TetraminoMaker
 
     private static Poly createSPoly() {
 	SquareType[][] squares = new SquareType[3][3];
+	for (int x=0; x<squares[0].length; x++) {
+	    for (int y=0; y<squares.length; y++) {
+		squares[y][x] = SquareType.EMPTY;
+	    }
+	}
 	squares[0][1] = SquareType.S;
 	squares[0][2] = SquareType.S;
 	squares[1][0] = SquareType.S;
@@ -66,6 +86,11 @@ public final class TetraminoMaker
 
     private static Poly createZPoly() {
 	SquareType[][] squares = new SquareType[3][3];
+	for (int x=0; x<squares[0].length; x++) {
+	    for (int y=0; y<squares.length; y++) {
+		squares[y][x] = SquareType.EMPTY;
+	    }
+	}
 	squares[0][0] = SquareType.Z;
 	squares[0][1] = SquareType.Z;
 	squares[1][1] = SquareType.Z;
@@ -76,6 +101,11 @@ public final class TetraminoMaker
 
     private static Poly createJPoly() {
 	SquareType[][] squares = new SquareType[3][3];
+	for (int x=0; x<squares[0].length; x++) {
+	    for (int y=0; y<squares.length; y++) {
+		squares[y][x] = SquareType.EMPTY;
+	    }
+	}
 	squares[0][0] = SquareType.J;
 	squares[1][0] = SquareType.J;
 	squares[1][1] = SquareType.J;
@@ -86,6 +116,11 @@ public final class TetraminoMaker
 
     private static Poly createLPoly() {
 	SquareType[][] squares = new SquareType[3][3];
+	for (int x=0; x<squares[0].length; x++) {
+	    for (int y=0; y<squares.length; y++) {
+		squares[y][x] = SquareType.EMPTY;
+	    }
+	}
 	squares[0][2] = SquareType.L;
 	squares[1][0] = SquareType.L;
 	squares[1][1] = SquareType.L;

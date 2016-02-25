@@ -3,6 +3,7 @@ package Tetris;
 import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.util.EnumMap;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,10 +22,12 @@ public class TetrisComponent extends JComponent implements BoardListener
 	SQUARE_COLOR.put(SquareType.Z, Color.RED);
 	SQUARE_COLOR.put(SquareType.J, Color.BLUE);
 	SQUARE_COLOR.put(SquareType.L, Color.MAGENTA);
+	SQUARE_COLOR.put(SquareType.EMPTY, Color.WHITE);
     }
 
     public TetrisComponent(final Board board) {
 	this.board = board;
+	this.setKeyBinds();
     }
 
     @Override public Dimension getPreferredSize() {
@@ -50,14 +53,15 @@ public class TetrisComponent extends JComponent implements BoardListener
 		int fallingPolyLength = board.getFallingPoly().block[0].length;
 	    	int fallingPolyHeight = board.getFallingPoly().block.length;
 
-		if ((board.getFallingX()<=x && x<=board.getFallingX()+fallingPolyLength) &&
-		    (board.getFallingY()<=y && y<=board.getFallingY()+fallingPolyHeight)) {
-		    if (board.getFallingPoly().block[y][x] == SquareType.EMPTY) {
+		if ((board.getFallingX()<=x && x<board.getFallingX()+fallingPolyLength) &&
+		    (board.getFallingY()<=y && y<board.getFallingY()+fallingPolyHeight)) {
+		    //x-board.getFallingX() is needed to give the x-coordinate in the block
+		    if (board.getFallingPoly().block[y-board.getFallingY()][x-board.getFallingX()] == SquareType.EMPTY) {
 			g2d.setColor(SQUARE_COLOR.get(board.getSquareType(x, y)));
-			g2d.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+			g2d.fillRect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 		    } else {
-			g2d.setColor(SQUARE_COLOR.get(board.getFallingPoly()));
-			g2d.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+			g2d.setColor(SQUARE_COLOR.get(board.getFallingPoly().block[y-board.getFallingY()][x-board.getFallingX()]));
+			g2d.fillRect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 		    }
 		}
 
@@ -68,6 +72,33 @@ public class TetrisComponent extends JComponent implements BoardListener
 	    }
 	}
     }
+
+    private class leftAction extends AbstractAction {
+	@Override public void actionPerformed(final ActionEvent e) {
+	    board.moveLeft();
+	}
+    }
+
+
+
+    private class rightAction extends AbstractAction {
+    	@Override public void actionPerformed(final ActionEvent e) {
+    	    board.moveRight();
+    	}
+    }
+
+    public void setKeyBinds() {
+	InputMap keybinds = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+	ActionMap actions = getActionMap();
+
+    	keybinds.put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
+	actions.put("moveLeft", new leftAction());
+
+	keybinds.put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
+	actions.put("moveRight", new rightAction());
+        }
+
+
 
     public void boardChanged() {
 	this.repaint();

@@ -11,7 +11,7 @@ import java.awt.Graphics2D;
 public class TetrisComponent extends JComponent implements BoardListener
 {
     private Board board;
-    final int BLOCK_SIZE = 40;
+    final static int BLOCK_SIZE = 40;
     final static EnumMap<SquareType,Color> SQUARE_COLOR;
     static {
 	SQUARE_COLOR = new EnumMap<>(SquareType.class);
@@ -73,7 +73,7 @@ public class TetrisComponent extends JComponent implements BoardListener
 	}
     }
 
-    private class leftAction extends AbstractAction {
+    private class LeftAction extends AbstractAction {
 	@Override public void actionPerformed(final ActionEvent e) {
 	    board.moveLeft();
 	}
@@ -81,7 +81,7 @@ public class TetrisComponent extends JComponent implements BoardListener
 
 
 
-    private class rightAction extends AbstractAction {
+    private class RightAction extends AbstractAction {
     	@Override public void actionPerformed(final ActionEvent e) {
     	    board.moveRight();
     	}
@@ -92,10 +92,10 @@ public class TetrisComponent extends JComponent implements BoardListener
 	ActionMap actions = getActionMap();
 
     	keybinds.put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
-	actions.put("moveLeft", new leftAction());
+	actions.put("moveLeft", new LeftAction());
 
 	keybinds.put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
-	actions.put("moveRight", new rightAction());
+	actions.put("moveRight", new RightAction());
         }
 
 

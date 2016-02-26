@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class BoardTest
+public final class BoardTest
 {
     private BoardTest() {}
 
@@ -14,11 +14,11 @@ public class BoardTest
 	final TetrisFrame frame = new TetrisFrame("Tetris", board);
 	board.addBoardListener(frame.tetrisComponent);
 
-	//board.clearBoard();
-
 	final Action doOneStep = new AbstractAction() {
 	    public void actionPerformed(ActionEvent e) {
-		board.tick();
+		if (board.running) {
+		    board.tick();
+		}
 	    }
 	};
 

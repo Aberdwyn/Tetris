@@ -2,8 +2,10 @@ package Tetris;
 
 public final class TetraminoMaker
 {
+    final static int NON_BLOCKS = 2;
+
     public static int getNumberOfTypes() {
-	return SquareType.values().length;
+	return SquareType.values().length - NON_BLOCKS;
     }
 
     private TetraminoMaker() {

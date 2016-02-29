@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.util.EnumMap;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Font;
 
 public class TetrisComponent extends JComponent implements BoardListener
 {
@@ -71,6 +72,13 @@ public class TetrisComponent extends JComponent implements BoardListener
 		}
 	    }
 	}
+	int leftAligned=0;
+	int topAligned=0;
+	int scoreSize = 20;
+	g2d.setColor(Color.BLACK);
+	System.out.println(board.getScore());
+	g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, scoreSize));
+	g2d.drawString(Integer.toString(board.getScore()),leftAligned, topAligned);
     }
 
     private class LeftAction extends AbstractAction {
@@ -79,13 +87,25 @@ public class TetrisComponent extends JComponent implements BoardListener
 	}
     }
 
-
-
     private class RightAction extends AbstractAction {
     	@Override public void actionPerformed(final ActionEvent e) {
     	    board.moveRight();
     	}
     }
+
+    private class DownAction extends AbstractAction {
+	@Override public void actionPerformed(final ActionEvent e) {
+        	    board.moveDown();
+        	}
+    }
+
+    private class RotateAction extends AbstractAction {
+	@Override public void actionPerformed(final ActionEvent e) {
+	    board.rotate();
+	}
+    }
+
+
 
     public void setKeyBinds() {
 	InputMap keybinds = getInputMap(WHEN_IN_FOCUSED_WINDOW);
@@ -96,9 +116,13 @@ public class TetrisComponent extends JComponent implements BoardListener
 
 	keybinds.put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
 	actions.put("moveRight", new RightAction());
+
+	keybinds.put(KeyStroke.getKeyStroke("DOWN"), "moveDown");
+	actions.put("moveDown", new DownAction());
+
+	keybinds.put(KeyStroke.getKeyStroke("UP"), "rotate");
+	actions.put("rotate", new RotateAction());
         }
-
-
 
     public void boardChanged() {
 	this.repaint();

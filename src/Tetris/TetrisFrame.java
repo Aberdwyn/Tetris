@@ -39,6 +39,9 @@ public class TetrisFrame extends JFrame
 	tetrisComponent = new TetrisComponent(board);
 	this.add(tetrisComponent, BorderLayout.CENTER);
 
+	//scoreboard
+
+
 	this.pack();
 
 	this.setVisible(true);

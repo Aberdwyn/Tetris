@@ -1,6 +1,7 @@
 package Tetris;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HighscoreList
@@ -22,9 +23,11 @@ public class HighscoreList
     }
 
     @Override public String toString() {
+	Collections.sort(highscores, new ScoreComparator());
 	StringBuilder str = new StringBuilder();
 	for (Highscore highscore: highscores) {
-	    str.append(highscore.toString());
+	    str.append(highscore);
+	    str.append("\n");
 	}
 	return str.toString();
     }

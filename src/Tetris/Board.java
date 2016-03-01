@@ -12,6 +12,7 @@ public class Board
     private Random rnd = new Random();
     private Poly fallingPoly = null;
     private List<BoardListener> boardListeners;
+    private CollisionHandler collisionHandler;
     private final static int WALL_THICKNESS = 2;
     private boolean running = true;
     private int score = 0;
@@ -21,6 +22,7 @@ public class Board
 	this.height = height;
 	this.squares = new SquareType[height+2*WALL_THICKNESS][width+2*WALL_THICKNESS];
 	this.boardListeners = new ArrayList<>();
+	this.collisionHandler = new DefaultCollisionHandler();
 
 	//initiates the board with a wall of outside blocks around it.
 	for (int x=0; x<width+2*WALL_THICKNESS; x++) {
@@ -53,8 +55,12 @@ public class Board
 	return fallingPoly;
     }
 
-    public SquareType getSquareType(int x, int y) {
+    public SquareType getSquareTypeAt(int x, int y) {
 	return squares[y+WALL_THICKNESS][x+WALL_THICKNESS];
+    }
+
+    public SquareType getFallingSquareTypeAt(int x, int y) {
+	return fallingPoly.block[y][x];
     }
 
     public int getScore() {
@@ -80,7 +86,7 @@ public class Board
 	    fallingPoly = TetraminoMaker.getPoly(rnd.nextInt(TetraminoMaker.getNumberOfTypes()));
 	    fallingX = width/2 - fallingPoly.block.length/2;
 	    fallingY = 0;
-	    if (this.hasCollision()) {
+	    if (collisionHandler.hasCollision(this)) {
 		running = false;
 		fallingY--;
 
@@ -92,7 +98,7 @@ public class Board
 	}
 	else {
 	    fallingY++;
-	    if (this.hasCollision()) {
+	    if (collisionHandler.hasCollision(this)) {
 		fallingY--;
 		this.addBlock(fallingPoly, fallingX, fallingY);
 		fallingPoly = null;
@@ -146,7 +152,7 @@ public class Board
     public void moveLeft() {
 	if (fallingPoly != null) {
 	    fallingX--;
-	    if (this.hasCollision()) fallingX++;
+	    if (collisionHandler.hasCollision(this)) fallingX++;
 	    this.notifyListeners();
 	}
     }
@@ -154,7 +160,7 @@ public class Board
     public void moveRight() {
 	if (fallingPoly != null) {
 	    fallingX++;
-	    if (this.hasCollision()) fallingX--;
+	    if (collisionHandler.hasCollision(this)) fallingX--;
 	    this.notifyListeners();
 	}
     }
@@ -162,26 +168,9 @@ public class Board
     public void moveDown() {
 	if (fallingPoly != null) {
 	    fallingY++;
-	    if (this.hasCollision()) fallingY--;
+	    if (collisionHandler.hasCollision(this)) fallingY--;
 	    this.notifyListeners();
 	}
-    }
-
-    /**
-     *
-     * @return true if fallingPoly collides with anything on the board, else false
-     */
-    public boolean hasCollision() {
-	int fallingPolyLength = fallingPoly.block[0].length;
-	int fallingPolyHeight = fallingPoly.block.length;
-	for (int x=0; x<fallingPolyLength; x++) {
-	    for (int y=0; y<fallingPolyHeight; y++) {
-		if (fallingPoly.block[y][x] != SquareType.EMPTY && squares[y + fallingY + WALL_THICKNESS][x + fallingX + WALL_THICKNESS] != SquareType.EMPTY) {
-		    return true;
-		}
-	    }
-	}
-	return false;
     }
 
     /**
@@ -202,7 +191,7 @@ public class Board
 
 	    fallingPoly = newPoly;
 
-	    if (hasCollision()) {
+	    if (collisionHandler.hasCollision(this)) {
 		fallingPoly = oldPoly;
 	    }
 

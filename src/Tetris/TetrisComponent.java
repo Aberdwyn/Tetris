@@ -46,7 +46,7 @@ public class TetrisComponent extends JComponent implements BoardListener
 	    for (int y = 0; y < board.getHeight(); y++) {
 
 		if (board.getFallingPoly() == null) {
-		    g2d.setColor(SQUARE_COLOR.get(board.getSquareType(x, y)));
+		    g2d.setColor(SQUARE_COLOR.get(board.getSquareTypeAt(x, y)));
 		    g2d.fillRect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 		    continue;
 		}
@@ -58,7 +58,7 @@ public class TetrisComponent extends JComponent implements BoardListener
 		    (board.getFallingY()<=y && y<board.getFallingY()+fallingPolyHeight)) {
 		    //x-board.getFallingX() is needed to give the x-coordinate in the block
 		    if (board.getFallingPoly().block[y-board.getFallingY()][x-board.getFallingX()] == SquareType.EMPTY) {
-			g2d.setColor(SQUARE_COLOR.get(board.getSquareType(x, y)));
+			g2d.setColor(SQUARE_COLOR.get(board.getSquareTypeAt(x, y)));
 			g2d.fillRect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 		    } else {
 			g2d.setColor(SQUARE_COLOR.get(board.getFallingPoly().block[y-board.getFallingY()][x-board.getFallingX()]));
@@ -67,7 +67,7 @@ public class TetrisComponent extends JComponent implements BoardListener
 		}
 
 		else {
-		    g2d.setColor(SQUARE_COLOR.get(board.getSquareType(x, y)));
+		    g2d.setColor(SQUARE_COLOR.get(board.getSquareTypeAt(x, y)));
 		    g2d.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 		}
 	    }

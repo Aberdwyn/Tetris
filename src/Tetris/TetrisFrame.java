@@ -24,12 +24,15 @@ public class TetrisFrame extends JFrame
 
 	final JMenu menu = new JMenu("Menu");
 	final JMenuItem help = new JMenuItem("Help");
+	final JMenuItem reset = new JMenuItem("Reset");
 	final JMenuItem exit = new JMenuItem("Exit");
 
 	exit.addActionListener(new ExitListener());
+	reset.addActionListener(new ResetListener());
 
 
 	menu.add(help);
+	menu.add(reset);
 	menu.add(exit);
 	menubar.add(menu);
 
@@ -47,7 +50,7 @@ public class TetrisFrame extends JFrame
 	this.setVisible(true);
     }
 
-    public class ExitListener implements ActionListener
+    private class ExitListener implements ActionListener
     {
 	public void actionPerformed(ActionEvent e) {
 	    if (JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "", JOptionPane.YES_NO_OPTION) ==
@@ -58,6 +61,15 @@ public class TetrisFrame extends JFrame
 
         }
     }
+
+    private class ResetListener implements ActionListener
+    {
+	public void actionPerformed(ActionEvent e) {
+	    board.resetBoard();
+	}
+    }
+
+
 
 }
 

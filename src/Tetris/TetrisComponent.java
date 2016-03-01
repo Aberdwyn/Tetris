@@ -77,6 +77,14 @@ public class TetrisComponent extends JComponent implements BoardListener
 	g2d.setColor(Color.PINK);
 	g2d.setFont(new Font(Font.MONOSPACED, Font.PLAIN, scoreSize));
 	g2d.drawString(Integer.toString(board.getScore()), leftAligned, scoreSize);
+
+	int margin = 10;
+
+	int powerupSize = 20;
+	String powerupText = board.getCollisionHandler().getDescription();
+	g2d.setColor(Color.ORANGE);
+	g2d.setFont(new Font(Font.MONOSPACED, Font.PLAIN, powerupSize));
+	g2d.drawString(powerupText, leftAligned, powerupSize+scoreSize+margin);
     }
 
     private class LeftAction extends AbstractAction {

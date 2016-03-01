@@ -16,6 +16,8 @@ public class Board
     private final static int WALL_THICKNESS = 2;
     private boolean running = true;
     private int score = 0;
+    private int powerupCounter = 0;
+    private int powerupPolyCount = 5;
 
     public Board(final int width, final int height) {
 	this.width = width;
@@ -67,6 +69,10 @@ public class Board
 	return score;
     }
 
+    public CollisionHandler getCollisionHandler() {
+	return collisionHandler;
+    }
+
     public boolean isRunning() {
 	return running;
     }
@@ -81,6 +87,10 @@ public class Board
 	}
     }
 
+    public void setSquareType(int x, int y, SquareType squareType) {
+	squares[y+WALL_THICKNESS][x+WALL_THICKNESS] = squareType;
+    }
+
     public void tick() {
 	if (fallingPoly == null) {
 	    fallingPoly = TetraminoMaker.getPoly(rnd.nextInt(TetraminoMaker.getNumberOfTypes()));
@@ -93,6 +103,18 @@ public class Board
 		this.addHighscore();
 		System.out.println(HighscoreList.getINSTANCE());
 	    }
+
+	    if (powerupCounter == powerupPolyCount) {
+		this.collisionHandler = new Heavy();
+		powerupCounter = 0;
+	    }
+	    else {
+		this.collisionHandler = new DefaultCollisionHandler();
+		powerupCounter++;
+	    }
+
+
+
 	    this.notifyListeners();
 
 	}
@@ -242,6 +264,10 @@ public class Board
 
     }
 
+    public void removeBlockAt(int x, int y) {
+	squares[y+WALL_THICKNESS][x+WALL_THICKNESS] = SquareType.EMPTY;
+    }
+
     /**
      * increases score based on the specified rows removed
      * @param rowsRemoved the number of rows removed
@@ -265,6 +291,28 @@ public class Board
 		score += fourRowsRemoved;
 		break;
 	}
+    }
+
+    /**
+     * if there is an empty block somewhere in this specified x column, it pushes the blocks above it down one step.
+     * @param x specifies the row in which it will happen
+     * @param endY specifies the end y-coord of this push down,
+     */
+    public void pushDown(int x, int endY) {
+	for (int y=height; y<endY; y--) {
+	    if (this.getSquareTypeAt(x, y) == SquareType.EMPTY) {
+		setSquareType(x, y, this.getSquareTypeAt(x, y-1));
+	    }
+	}
+    }
+
+    public boolean columnCanCollapse(int x, int startY) {
+	for (int y = startY; y<height; y++) {
+	    if (this.getSquareTypeAt(x, y) == SquareType.EMPTY) {
+		return true;
+	    }
+	}
+	return false;
     }
 }
 

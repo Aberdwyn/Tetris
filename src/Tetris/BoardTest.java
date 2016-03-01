@@ -15,7 +15,7 @@ public final class BoardTest
 
 	final Action doOneStep = new AbstractAction() {
 	    public void actionPerformed(ActionEvent e) {
-		if (board.running) {
+		if (board.isRunning()) {
 		    board.tick();
 		}
 	    }

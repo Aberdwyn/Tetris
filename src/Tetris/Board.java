@@ -11,8 +11,8 @@ public class Board
     private Random rnd = new Random();
     private Poly fallingPoly = null;
     private List<BoardListener> boardListeners;
-    public final static int WALL_THICKNESS = 2;
-    public boolean running = true;
+    private final static int WALL_THICKNESS = 2;
+    private boolean running = true;
     private int score = 0;
 
     public Board(final int width, final int height) {
@@ -58,6 +58,14 @@ public class Board
 
     public int getScore() {
 	return score;
+    }
+
+    public static int getWallThickness() {
+	return WALL_THICKNESS;
+    }
+
+    public boolean isRunning() {
+	return running;
     }
 
     public void addBoardListener(BoardListener bl) {

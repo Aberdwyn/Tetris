@@ -1,4 +1,4 @@
-package Tetris;
+package tetris.se.liu.ida.antni450.tetris;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -17,14 +17,19 @@ public class Board
     private boolean running = true;
     private int score = 0;
     private int powerupCounter = 0;
-    private int powerupPolyCount = 5;
+    private int powerupPolyCount = 10;
+    private List<CollisionHandler> powerups;
 
     public Board(final int width, final int height) {
 	this.width = width;
 	this.height = height;
 	this.squares = new SquareType[height+2*WALL_THICKNESS][width+2*WALL_THICKNESS];
 	this.boardListeners = new ArrayList<>();
+	this.powerups = new ArrayList<>();
 	this.collisionHandler = new DefaultCollisionHandler();
+
+	this.powerups.add(new Fallthrough());
+	this.powerups.add(new Heavy());
 
 	//initiates the board with a wall of outside blocks around it.
 	for (int x=0; x<width+2*WALL_THICKNESS; x++) {
@@ -104,8 +109,8 @@ public class Board
 		System.out.println(HighscoreList.getINSTANCE());
 	    }
 
-	    if (powerupCounter == powerupPolyCount) {
-		this.collisionHandler = new Heavy();
+	    if (powerupCounter > powerupPolyCount) {
+		this.collisionHandler = powerups.get(rnd.nextInt(powerups.size()));
 		powerupCounter = 0;
 	    }
 	    else {
@@ -146,6 +151,7 @@ public class Board
 	}
 	fallingPoly = null;
 	score = 0;
+	powerupCounter = 0;
 	this.notifyListeners();
 	running = true;
     }
@@ -294,16 +300,20 @@ public class Board
     }
 
     /**
-     * if there is an empty block somewhere in this specified x column, it pushes the blocks above it down one step.
-     * @param x specifies the row in which it will happen
+     * if there is an empty block somewhere in this specified x column, it pushes the block above it down one step.
+     * @param x specifies the column in which it will happen
      * @param endY specifies the end y-coord of this push down,
      */
     public void pushDown(int x, int endY) {
-	for (int y=height; y<endY; y--) {
+	for (int y=height-1; y>endY; y--) {
 	    if (this.getSquareTypeAt(x, y) == SquareType.EMPTY) {
-		setSquareType(x, y, this.getSquareTypeAt(x, y-1));
+		//setSquareType(x, y, this.getSquareTypeAt(x, y-1));
+		squares[y+2][x+2] = squares[y+2-1][x+2];
+		squares[y+2-1][x+2] = SquareType.EMPTY;
+
 	    }
 	}
+
     }
 
     public boolean columnCanCollapse(int x, int startY) {

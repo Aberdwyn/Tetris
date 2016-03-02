@@ -1,4 +1,4 @@
-package Tetris;
+package tetris.se.liu.ida.antni450.tetris;
 
 import javax.swing.*;
 import java.awt.*;

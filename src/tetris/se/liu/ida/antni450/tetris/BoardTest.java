@@ -1,4 +1,4 @@
-package Tetris;
+package tetris.se.liu.ida.antni450.tetris;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +10,7 @@ public final class BoardTest
     public static void main(String[] args) {
 	final Board board = new Board(10, 20);
 
-	final TetrisFrame frame = new TetrisFrame("Tetris", board);
+	final TetrisFrame frame = new TetrisFrame("tetris", board);
 	board.addBoardListener(frame.tetrisComponent);
 
 	final Action doOneStep = new AbstractAction() {

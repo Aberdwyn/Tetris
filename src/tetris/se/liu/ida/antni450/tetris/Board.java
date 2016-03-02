@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * this class handles the game mechanics in tetris
+ */
 public class Board
 {
     private SquareType[][] squares;
@@ -31,7 +34,7 @@ public class Board
 	this.powerups.add(new Fallthrough());
 	this.powerups.add(new Heavy());
 
-	//initiates the board with a wall of outside blocks around it.
+	//initiates the board with a wall of SquareType.OUTSIDE blocks around it.
 	for (int x=0; x<width+2*WALL_THICKNESS; x++) {
 	    for (int y=0; y<height+2*WALL_THICKNESS; y++) {
 		if (x<WALL_THICKNESS || x>=WALL_THICKNESS+width || y<WALL_THICKNESS || y>=WALL_THICKNESS+height) {
@@ -42,34 +45,71 @@ public class Board
 	}
     }
 
+    /**
+     *
+     * @return the width of the gameboard
+     */
     public int getWidth() {
 	return width;
     }
 
+    /**
+     *
+     * @return the height of the gameboard
+     */
     public int getHeight() {
 	return height;
     }
 
+    /**
+     *
+     * @return the x-coord of the falling poly
+     */
     public int getFallingX() {
 	return fallingX;
     }
 
+    /**
+     *
+     * @return the y-coord of the falling poly
+     */
     public int getFallingY() {
 	return fallingY;
     }
 
+    /**
+     *
+     * @return the falling poly object
+     */
     public Poly getFallingPoly() {
 	return fallingPoly;
     }
 
+    /**
+     * looks up the SquareType at specified x and y coord in the  gameboard 2D array.
+     * it ignores the walls of OUTSIDE squaretypes.
+     * @param x column x in 2d array
+     * @param y row y in 2d array
+     * @return the SquareType at specified x- and y-coord
+     */
     public SquareType getSquareTypeAt(int x, int y) {
 	return squares[y+WALL_THICKNESS][x+WALL_THICKNESS];
     }
 
+    /**
+     * looks up the SquareType at specified x and y coord in the fallingPoly 2D array
+     * @param x column x in 2d array
+     * @param y row y in 2d array
+     * @return the SquareType at specified x- and y-coord in the current falling poly
+     */
     public SquareType getFallingSquareTypeAt(int x, int y) {
 	return fallingPoly.block[y][x];
     }
 
+    /**
+     *
+     * @return the current score
+     */
     public int getScore() {
 	return score;
     }

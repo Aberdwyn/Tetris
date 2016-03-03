@@ -13,14 +13,15 @@ public class Board
     private SquareType[][] squares;
     private int  width, height, fallingX, fallingY;
     private Random rnd = new Random();
+    //a pointer to the current falling poly
     private Poly fallingPoly = null;
     private List<BoardListener> boardListeners;
     private CollisionHandler collisionHandler;
+    //the thickness of the wall of OUTSIDE blocks around the board
     private final static int WALL_THICKNESS = 2;
     private boolean running = true;
     private int score = 0;
     private int powerupCounter = 0;
-    private int powerupPolyCount = 10;
     private List<CollisionHandler> powerups;
 
     public Board(final int width, final int height) {
@@ -31,6 +32,7 @@ public class Board
 	this.powerups = new ArrayList<>();
 	this.collisionHandler = new DefaultCollisionHandler();
 
+	//add the powerups to the powerup list
 	this.powerups.add(new Fallthrough());
 	this.powerups.add(new Heavy());
 
@@ -114,41 +116,71 @@ public class Board
 	return score;
     }
 
+    /**
+     *
+     * @return the current collisionHandler
+     */
     public CollisionHandler getCollisionHandler() {
 	return collisionHandler;
     }
 
+    /**
+     *
+     * @return returns boolean value that shows if the game is currently running or not
+     */
     public boolean isRunning() {
 	return running;
     }
 
+    /**
+     * add the specified boardlistener to the list of boardlisteners
+     * @param bl the boardlistener you want to add
+     */
     public void addBoardListener(BoardListener bl) {
 	this.boardListeners.add(bl);
     }
 
+    /**
+     * sends a call to all boardlisteners added that the board has changed
+     */
     private void notifyListeners() {
 	for (BoardListener bl: boardListeners) {
 	    bl.boardChanged();
 	}
     }
 
-    public void setSquareType(int x, int y, SquareType squareType) {
+    /**
+     * set the squaretype at specified x- and y-coord to the specified squaretype.
+     * avoids the wall of OUTSIDE blocks around the game board.
+     * @param x number of column in a 2d array
+     * @param y number of row in a 2d array
+     * @param squareType type of square
+     */
+    public void setSquareTypeAt(int x, int y, SquareType squareType) {
 	squares[y+WALL_THICKNESS][x+WALL_THICKNESS] = squareType;
     }
 
+    /**
+     * this method is used every time the timer ticks.
+     * it makes the game go forward
+     */
     public void tick() {
 	if (fallingPoly == null) {
+	    //uses the factory class TetraminoMaker to create a new random falling poly.
 	    fallingPoly = TetraminoMaker.getPoly(rnd.nextInt(TetraminoMaker.getNumberOfTypes()));
-	    fallingX = width/2 - fallingPoly.block.length/2;
+	    fallingX = fallingPoly.block.length/2 + width/2 - WALL_THICKNESS;
 	    fallingY = 0;
 	    if (collisionHandler.hasCollision(this)) {
 		running = false;
 		fallingY--;
 
 		this.addHighscore();
+		//prints all highscores
 		System.out.println(HighscoreList.getINSTANCE());
 	    }
 
+	    //how often the poly will be a powerup
+	    final int powerupPolyCount = 10;
 	    if (powerupCounter > powerupPolyCount) {
 		this.collisionHandler = powerups.get(rnd.nextInt(powerups.size()));
 		powerupCounter = 0;
@@ -175,7 +207,7 @@ public class Board
     }
 
     /**
-     * ädds the score to the highscore list and prints the contents of the highscore list
+     * adds the score to the highscore list
      */
     private void addHighscore() {
 	String name = JOptionPane.showInputDialog("Please input your name");
@@ -183,6 +215,9 @@ public class Board
 	HighscoreList.getINSTANCE().addHighscore(newHighscore);
     }
 
+    /**
+     * resets the game
+     */
     public void resetBoard() {
 	for (int x=WALL_THICKNESS; x<width+WALL_THICKNESS; x++) {
 	    for (int y=WALL_THICKNESS; y<height+WALL_THICKNESS; y++) {
@@ -196,13 +231,21 @@ public class Board
 	running = true;
     }
 
+    /**
+     * adds the specified poly to the gameboard at specified x- and y-coord.
+     * also checks if there are any full rows and in that case, removes them.
+     * increases the score by how many rows was removed.
+     * @param poly the poly that you want to add
+     * @param blockX x-coord of the poly
+     * @param blockY y-coord of the poly
+     */
     public void addBlock(Poly poly, int blockX, int blockY) {
 	int polyLength = poly.block[0].length;
 	int polyHeight = poly.block.length;
 	for (int polyX=0; polyX<polyLength; polyX++) {
 	    for (int polyY=0; polyY<polyHeight; polyY++) {
-		if (poly.block[polyY][polyX] != SquareType.EMPTY) {
-		    squares[polyY+blockY+WALL_THICKNESS][polyX+blockX+WALL_THICKNESS] = poly.block[polyY][polyX];
+		if (this.getFallingSquareTypeAt(polyX, polyY) != SquareType.EMPTY) {
+		    this.setSquareTypeAt(polyX+blockX, polyY+blockY, this.getFallingSquareTypeAt(polyX, polyY));
 		}
 	    }
 	}
@@ -217,26 +260,18 @@ public class Board
 	this.notifyListeners();
     }
 
-    public void moveLeft() {
+    /**
+     * moves the falling poly in the specified direction
+     * @param direction Movetype direction
+     */
+    public void move(Move direction) {
 	if (fallingPoly != null) {
-	    fallingX--;
-	    if (collisionHandler.hasCollision(this)) fallingX++;
-	    this.notifyListeners();
-	}
-    }
-
-    public void moveRight() {
-	if (fallingPoly != null) {
-	    fallingX++;
-	    if (collisionHandler.hasCollision(this)) fallingX--;
-	    this.notifyListeners();
-	}
-    }
-
-    public void moveDown() {
-	if (fallingPoly != null) {
-	    fallingY++;
-	    if (collisionHandler.hasCollision(this)) fallingY--;
+	    fallingX += direction.getDeltaX();
+	    fallingY += direction.getDeltaY();
+	    if (collisionHandler.hasCollision(this)) {
+		fallingX -= direction.getDeltaX();
+		fallingY -= direction.getDeltaY();
+	    }
 	    this.notifyListeners();
 	}
     }
@@ -268,14 +303,14 @@ public class Board
     }
 
     /**
-     *
      * @return the first y-coord found which has a full row
+     * -1 if there is no full row
      */
     public int findFullRow() {
 	int counter=0;
-	for (int y=WALL_THICKNESS; y<height+WALL_THICKNESS; y++) {
-	    for (int x = WALL_THICKNESS; x < width + WALL_THICKNESS; x++) {
-		if (squares[y][x] != SquareType.EMPTY) {
+	for (int y = 0; y<height; y++) {
+	    for (int x = 0; x < width ; x++) {
+		if (this.getSquareTypeAt(x, y) != SquareType.EMPTY) {
 		    counter++;
 		}
 		if (counter == width) {
@@ -288,34 +323,37 @@ public class Board
     }
 
     /**
-     *
      * @return true if there is a full row, false otherwise
      */
     public boolean hasFullRow() {
 	return (findFullRow() != -1);
     }
 
-
     /**
      * removes the first full row it finds and moves the rows above this row down one step
      */
     public void removeFullRow() {
     int fullRowY = findFullRow();
-	for (int y=fullRowY; y>WALL_THICKNESS; y--) {
-	    for (int x = WALL_THICKNESS; x<width+WALL_THICKNESS; x++) {
-		squares[y][x] = squares[y-1][x];
+	for (int y=fullRowY; y>0; y--) {
+	    for (int x = 0; x<width; x++) {
+		this.setSquareTypeAt(x, y, this.getSquareTypeAt(x, y-1));
 	    }
 	}
 	this.notifyListeners();
 
     }
 
+    /**
+     * sets the squaretype at specified x and y in the gameboard to EMPTY
+     * @param x column in 2d array
+     * @param y row in 2d array
+     */
     public void removeBlockAt(int x, int y) {
-	squares[y+WALL_THICKNESS][x+WALL_THICKNESS] = SquareType.EMPTY;
+	this.setSquareTypeAt(x, y, SquareType.EMPTY);
     }
 
     /**
-     * increases score based on the specified rows removed
+     * increases score based on the specified number of rows removed
      * @param rowsRemoved the number of rows removed
      */
     public void increaseScore(int rowsRemoved) {
@@ -347,15 +385,21 @@ public class Board
     public void pushDown(int x, int endY) {
 	for (int y=height-1; y>endY; y--) {
 	    if (this.getSquareTypeAt(x, y) == SquareType.EMPTY) {
-		//setSquareType(x, y, this.getSquareTypeAt(x, y-1));
-		squares[y+2][x+2] = squares[y+2-1][x+2];
-		squares[y+2-1][x+2] = SquareType.EMPTY;
+		this.setSquareTypeAt(x, y, this.getSquareTypeAt(x, y-1));
+		this.removeBlockAt(x, y-1);
 
 	    }
 	}
 
     }
 
+    /**
+     * checks if the specified x-coord can collapse
+     * a collapse can only happen if there is atleast one empty block in the column
+     * @param x column in 2d array
+     * @param startY start value of collapse
+     * @return true or false whether the column can collapse or not
+     */
     public boolean columnCanCollapse(int x, int startY) {
 	for (int y = startY; y<height; y++) {
 	    if (this.getSquareTypeAt(x, y) == SquareType.EMPTY) {

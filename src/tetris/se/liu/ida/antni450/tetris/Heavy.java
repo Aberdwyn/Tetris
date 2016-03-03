@@ -1,9 +1,18 @@
 package tetris.se.liu.ida.antni450.tetris;
 
+/**
+ * this is the collision handler for the powerup heavy
+ */
 public class Heavy implements CollisionHandler
 {
 
-    public boolean hasCollision(Board board) {
+    /**
+     * when the falling poly collides with a block that cannot collapse or an outside block it will return true
+     * when it collides with a block that can collapse, the column will be collapsed and false is returned.
+     * @param board the tetris board
+     * @return true if the falling poly collides with an OUTSIDE block or a column that can be collapsed, false otherwise
+     */
+    @Override public boolean hasCollision(Board board) {
 	int fallingPolyLength = board.getFallingPoly().block[0].length;
 	int fallingPolyHeight = board.getFallingPoly().block.length;
 	for (int y = 0; y < fallingPolyHeight; y++) {
@@ -28,7 +37,11 @@ public class Heavy implements CollisionHandler
 	return false;
     }
 
-    public String getDescription() {
+    /**
+     * @return the description of the collision handler
+     */
+    @Override public String getDescription() {
+	//this description will be shown on the board
 	String description = "Heavy";
 	return description;
     }

@@ -1,12 +1,15 @@
 package tetris.se.liu.ida.antni450.tetris;
 
+/**
+ * this is the default collision handler
+ */
 public class DefaultCollisionHandler implements CollisionHandler
 {
     /**
-     *
+     * checks if the fallingPoly collides with anything
      * @return true if fallingPoly collides with anything on the board, else false
      */
-    public boolean hasCollision(Board board) {
+    @Override public boolean hasCollision(Board board) {
 	int fallingPolyLength = board.getFallingPoly().block[0].length;
 	int fallingPolyHeight = board.getFallingPoly().block.length;
 	for (int x = 0; x < fallingPolyLength; x++) {
@@ -20,7 +23,11 @@ public class DefaultCollisionHandler implements CollisionHandler
 	return false;
     }
 
-    public String getDescription() {
+    /**
+     * @return the description of the collision handler
+     */
+    @Override public String getDescription() {
+	//this description will be shown on the board
 	String description = "Standard";
 	return description;
     }

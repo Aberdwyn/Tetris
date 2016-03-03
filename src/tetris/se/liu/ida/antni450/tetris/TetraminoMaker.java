@@ -1,19 +1,32 @@
 package tetris.se.liu.ida.antni450.tetris;
 
+/**
+ * this is a factory class for making tetris tetraminos
+ */
 public final class TetraminoMaker
 {
+    //the empty. and outside-blocks are not actual tetris blocks
     final static int NON_BLOCKS = 2;
 
+    /**
+     * @return the amount of different tetramino blocks, ignoring empty and outside
+     */
     public static int getNumberOfTypes() {
 	return SquareType.values().length - NON_BLOCKS;
     }
 
-    private TetraminoMaker() {
-    }
 
+    private TetraminoMaker() {}
+
+    /**
+     * this method creates and returns a new poly depending on which integer n is specified
+     * @param n number used to decide which poly will be created
+     * @return a new poly
+     */
     public static Poly getPoly(int n) {
 	SquareType squaretype = SquareType.values()[n];
 
+	//both EMPTY and OUTSIDe will never be used to create a poly, and they are therefore not included in the switch case.
 	switch (squaretype) {
 	    case I: return createIPoly();
 	    case O: return createOPoly();
@@ -26,6 +39,10 @@ public final class TetraminoMaker
 	}
     }
 
+    /**
+     * creates an I-poly sorrounded by EMPTY squares in a 2d-array
+     * @return the I-poly
+     */
     private static Poly createIPoly() {
 	SquareType[][] squares = new SquareType[4][4];
 	for (int x=0; x<squares[0].length; x++) {
@@ -41,6 +58,10 @@ public final class TetraminoMaker
 	return poly;
     }
 
+    /**
+     * creates an O-poly sorrounded by EMPTY squares in a 2d-array
+     * @return the O-poly
+     */
     private static Poly createOPoly() {
 	SquareType[][] squares = new SquareType[2][2];
 	for (int x=0; x<squares[0].length; x++) {
@@ -56,6 +77,10 @@ public final class TetraminoMaker
 	return poly;
     }
 
+    /**
+     * creates a T-poly sorrounded by EMPTY squares in a 2d-array
+     * @return the T-poly
+     */
     private static Poly createTPoly() {
 	SquareType[][] squares = new SquareType[3][3];
 	for (int x=0; x<squares[0].length; x++) {
@@ -71,6 +96,10 @@ public final class TetraminoMaker
 	return poly;
     }
 
+    /**
+     * creates a S-poly sorrounded by EMPTY squares in a 2d-array
+     * @return the S-poly
+     */
     private static Poly createSPoly() {
 	SquareType[][] squares = new SquareType[3][3];
 	for (int x=0; x<squares[0].length; x++) {
@@ -86,6 +115,10 @@ public final class TetraminoMaker
 	return poly;
     }
 
+    /**
+     * creates a Z-poly sorrounded by EMPTY squares in a 2d-array
+     * @return the Z-poly
+     */
     private static Poly createZPoly() {
 	SquareType[][] squares = new SquareType[3][3];
 	for (int x=0; x<squares[0].length; x++) {
@@ -101,6 +134,10 @@ public final class TetraminoMaker
     	return poly;
     }
 
+    /**
+     * creates a J-poly sorrounded by EMPTY squares in a 2d-array
+     * @return the J-poly
+     */
     private static Poly createJPoly() {
 	SquareType[][] squares = new SquareType[3][3];
 	for (int x=0; x<squares[0].length; x++) {
@@ -116,6 +153,10 @@ public final class TetraminoMaker
         return poly;
     }
 
+    /**
+     * creates a L-poly sorrounded by EMPTY squares in a 2d-array
+     * @return the L-poly
+     */
     private static Poly createLPoly() {
 	SquareType[][] squares = new SquareType[3][3];
 	for (int x=0; x<squares[0].length; x++) {

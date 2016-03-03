@@ -1,5 +1,8 @@
 package tetris.se.liu.ida.antni450.tetris;
 
+/**
+ * this class can be used to create highscores
+ */
 public class Highscore
 {
     private int score;
@@ -12,10 +15,6 @@ public class Highscore
 
     public int getScore() {
 	return score;
-    }
-
-    public String getName() {
-	return name;
     }
 
     @Override public String toString() {

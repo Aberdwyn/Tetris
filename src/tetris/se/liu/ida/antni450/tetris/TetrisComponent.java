@@ -19,7 +19,7 @@ public class TetrisComponent extends JComponent implements BoardListener
     /**
      * this EnumMap sets a SQUARE_COLOR to each SquareType
      */
-    //no this is what I want
+    //no this is what I want. I can be this specific.
     final static EnumMap<SquareType,Color> SQUARE_COLOR;
     static {
 	SQUARE_COLOR = new EnumMap<>(SquareType.class);

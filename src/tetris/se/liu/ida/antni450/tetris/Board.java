@@ -180,7 +180,7 @@ public class Board
 	    }
 
 	    //how often the poly will be a powerup
-	    final int powerupPolyCount = 1;
+	    final int powerupPolyCount = 5;
 	    if (powerupCounter > powerupPolyCount) {
 		this.collisionHandler = powerups.get(rnd.nextInt(powerups.size()));
 		powerupCounter = 0;

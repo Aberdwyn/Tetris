@@ -40,14 +40,12 @@ public class TetrisFrame extends JFrame
 	final JMenuBar menubar = new JMenuBar();
 
 	final JMenu menu = new JMenu("Menu");
-	final JMenuItem help = new JMenuItem("Help");
 	final JMenuItem reset = new JMenuItem("Reset");
 	final JMenuItem exit = new JMenuItem("Exit");
 	//adds the listeners to their corresponding buttons
 	exit.addActionListener(new ExitListener());
 	reset.addActionListener(new ResetListener());
 
-	menu.add(help);
 	menu.add(reset);
 	menu.add(exit);
 	menubar.add(menu);

@@ -41,6 +41,4 @@ final public class HighscoreList
 	}
 	return str.toString();
     }
-
-
 }
